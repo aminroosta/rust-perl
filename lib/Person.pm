@@ -4,13 +4,15 @@ use strict;
 use warnings;
 use 5.014;
 use FFI::Platypus 1.00;
+use Path::Tiny qw( path );
+use FindBin;
+
 
 our $VERSION = '1.00';
 
 my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
 
-# use the bundled code as a library
-$ffi->bundle;
+$ffi->lib("$FindBin::Bin/target/debug/libperson.so");
 
 # use the person_ prefix
 $ffi->mangler(sub {

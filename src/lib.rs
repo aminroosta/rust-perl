@@ -2,7 +2,7 @@ use std::ffi::CString;
 use std::ffi::c_void;
 use std::ffi::CStr;
 use std::cell::RefCell;
-use ffi_utils::expose;
+use utils::expose;
 
 struct Person {
     name: String,
