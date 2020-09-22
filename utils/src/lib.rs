@@ -22,6 +22,11 @@ pub fn expose(input: TokenStream) -> TokenStream {
 	let prefix = exports.prefix;
 	let type_t = format_ident!("C{}", prefix);
 
+    // let project_root = std::env::var("CARGO_MANIFEST_DIR").unwrap();
+    // let perl_file = format!("{}/lib/{}.pm", &project_root, &prefix);
+    // TODO: write the perl boiler plate
+    // dbg!(perl_file);
+
     let items : Vec<_> = exports.items.into_iter().map(|item| {
         let sig = item.sig;
         let fn_name = format_ident!("{}_{}", prefix, sig.ident);
