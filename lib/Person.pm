@@ -17,7 +17,7 @@ $ffi->lib("$FindBin::Bin/target/debug/libperson.so");
 # use the person_ prefix
 $ffi->mangler(sub {
     my $symbol = shift;
-    return "person_$symbol";
+    return "Person_$symbol";
 });
 
 # Create a custom type mapping for the person_t (C) and Person (perl)
