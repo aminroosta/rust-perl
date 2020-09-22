@@ -2,6 +2,7 @@ use std::ffi::CString;
 use std::ffi::c_void;
 use std::ffi::CStr;
 use std::cell::RefCell;
+use ffi_utils::expose;
 
 struct Person {
     name: String,
@@ -25,7 +26,14 @@ impl Person {
     }
 }
 
-type CPerson = c_void;
+expose!{
+	Person {
+		fn new(name: &str, lucky_number: i32) -> Person;
+		fn get_name(&self) -> String;
+	}
+}
+
+// type CPerson = c_void;
 
 #[no_mangle]
 pub extern "C" fn person_new(_class: *const i8, name: *const i8, lucky_number: i32) -> *mut CPerson {
