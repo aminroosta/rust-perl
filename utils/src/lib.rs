@@ -38,7 +38,7 @@ pub fn expose(input: TokenStream) -> TokenStream {
                 syn::FnArg::Receiver(_) => {
                     inputs_in_arg.push(quote! { self_: *mut #type_t });
                     inputs_in_body.push(quote! { let self_ = unsafe {
-                        &*(self_ as *mut #prefix)};
+                        &mut*(self_ as *mut #prefix)};
                     });
                 },
                 syn::FnArg::Typed(r) => {

@@ -12,7 +12,7 @@ our $VERSION = '1.00';
 
 my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
 
-$ffi->lib("$FindBin::Bin/target/debug/libperson.so");
+$ffi->lib("$FindBin::Bin/rust-perl/target/release/libperson.so");
 
 # use the person_ prefix
 $ffi->mangler(sub {
@@ -28,5 +28,6 @@ $ffi->attach( new          => [ 'string', 'string', 'i32' ] => 'person_t' );
 $ffi->attach( name         => [ 'person_t' ] => 'string' );
 $ffi->attach( lucky_number => [ 'person_t' ] => 'i32' );
 $ffi->attach( DESTROY      => [ 'person_t' ] );
+$ffi->attach( spot_min_max => [ 'person_t', 'string', 'u64', 'u64' ] => 'string' );
 
 1;
