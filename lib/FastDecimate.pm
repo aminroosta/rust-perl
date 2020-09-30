@@ -8,7 +8,7 @@ use Path::Tiny qw( path );
 
 our $VERSION = '1.00';
 
-my $lib_file = path(__FILE__)->parent->child('target/release/libperson.so')->absolute;
+my $lib_file = path(__FILE__)->parent->parent->child('target/release/libperson.so')->absolute;
 
 my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
 $ffi->lib($lib_file);
