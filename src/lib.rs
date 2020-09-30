@@ -6,7 +6,7 @@ struct FastDecimate {
 }
 
 impl FastDecimate {
-    fn new(redis_url: &str) -> FastDecimate {
+    fn new() -> FastDecimate {
         let client = redis::Client::open("redis://127.0.0.1:6360/").unwrap();
         let con = client.get_connection().unwrap();
         FastDecimate {
@@ -15,26 +15,37 @@ impl FastDecimate {
     }
 
     fn spot_min_max(&mut self, key: &str, start: u64, end: u64) -> String {
-        let res : Vec<String> = redis::cmd("ZRANGEBYSCORE").arg(key).arg(start).arg(end).query(&mut self.con).unwrap();
-        dbg!(res);
+        let res : Vec<String> = redis::cmd("ZRANGEBYSCORE")
+            .arg(key)
+            .arg(start)
+            .arg(end)
+            .query(&mut self.con)
+            .unwrap();
 
-        // let quotes: Vec<_> = res.into_iter().map(|v| {
-        //     let t : Tick = serde_cbor::from_reader(v.as_slice()).unwrap();
-        //     t.quote
-        // }).collect();
+        let mut minimum = std::f64::MAX;
+        let mut maximum = std::f64::MIN;
+        res.iter().for_each(|v| {
+            let spot = v.split("::")
+                .next()
+                .unwrap()
+                .parse::<f64>()
+                .unwrap();
+            if spot < minimum {
+                minimum = spot;
+            }
+            if spot > maximum {
+                maximum = spot;
+            }
+        });
 
-        // let min = quotes.iter().min().unwrap();
-        // let max = quotes.iter().max().unwrap();
-
-        // format!("{} {}", min, max)
-        "".to_string()
-        // res.to_string()
+        // dbg!(minimum, maximum);
+        format!("{} {}", minimum, maximum)
     }
 }
 
 expose!{
 	FastDecimate {
-        fn new(redis_url: &str) -> FastDecimate;
+        fn new() -> FastDecimate;
         fn spot_min_max(&self, key: &str, start: u64, end: u64) -> String;
 	}
 }

@@ -21,7 +21,7 @@ $ffi->mangler(sub {
 
 $ffi->type( 'object(FastDecimate)' => 'decimate_t' );
 
-$ffi->attach( new          => [ 'string' ] => 'decimate_t' );
+$ffi->attach( new          => [] => 'decimate_t' );
 $ffi->attach( DESTROY      => [ 'decimate_t' ] );
 $ffi->attach( spot_min_max => [ 'decimate_t', 'string', 'u64', 'u64' ] => 'string' );
 
